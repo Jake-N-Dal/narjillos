@@ -9,17 +9,16 @@ import org.nusco.narjillos.application.utilities.Speed;
 
 public class StatusBarView {
 
-	public Node toNode(int ticksInLastSecond, String environmentStatistics, String performanceStatistics, Speed speed, Effects effects,
-		String trackingStatus, boolean isBusy) {
-		String message = "FPS: " + ticksInLastSecond + " / " + performanceStatistics + "\n" +
-			environmentStatistics + "\n" +
-			getSpeedMessage(speed, effects) + "\n" +
-			"Mode: " + trackingStatus + "\n" +
-			getBusyMessage(isBusy);
+	public Node toNode(StatusBarData data) {
+		String message = "FPS: " + data.getTicksInLastSecond() + " / " + data.getPerformanceStatistics() + "\n" +
+				data.getEnvironmentStatistics() + "\n" +
+				getSpeedMessage(data.getSpeed(), data.getEffects()) + "\n" +
+				"Mode: " + data.getTrackingStatus() + "\n" +
+				getBusyMessage(data.isBusy());
 
 		Text result = new Text(message);
 		result.setFont(Font.font("HelveticaNeue-Bold", 14));
-		result.setFill(speed.getViewColor());
+		result.setFill(data.getSpeed().getViewColor());
 		result.setTranslateX(5);
 		result.setTranslateY(15);
 		return result;

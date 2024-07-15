@@ -14,6 +14,7 @@ import org.nusco.narjillos.application.utilities.StoppableThread;
 import org.nusco.narjillos.application.views.EnvironmentView;
 import org.nusco.narjillos.application.views.MicroscopeView;
 import org.nusco.narjillos.application.views.StatusBarView;
+import org.nusco.narjillos.application.views.StatusBarData;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.utilities.Chronometer;
 import org.nusco.narjillos.core.configuration.Configuration;
@@ -117,9 +118,19 @@ public class MainNarjillosApplication extends NarjillosApplication {
 				root.getChildren().add(environmentView.toNode());
 				root.getChildren().add(foregroundView.toNode());
 
-				Node statusInfo = statusBarView.toNode(framesChronometer.getTicksInLastSecond(), getEnvironmentStatistics(),
-						getDishStatistics(), state.getSpeed(), state.getEffects(),
-						getTracker().getStatus(), isBusy());
+				// Create StatusBarData object
+				StatusBarData statusBarData = new StatusBarData(
+						framesChronometer.getTicksInLastSecond(),
+						getEnvironmentStatistics(),
+						getDishStatistics(),
+						state.getSpeed(),
+						state.getEffects(),
+						getTracker().getStatus(),
+						isBusy()
+				);
+
+				// Pass StatusBarData object to toNode method
+				Node statusInfo = statusBarView.toNode(statusBarData);
 				root.getChildren().add(statusInfo);
 			}
 		};
