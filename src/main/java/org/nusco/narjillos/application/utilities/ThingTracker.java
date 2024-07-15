@@ -8,9 +8,9 @@ import org.nusco.narjillos.experiment.environment.FoodPellet;
 
 public class ThingTracker {
 
-	private static final long DEMO_MODE_FOCUS_TIME_IN_SECONDS = 12;
+	private static final long DemoFocusTimeSec = 12;
 
-	private static final long DEMO_MODE_ZOOM_TIME_IN_SECONDS = 3;
+	private static final long DemoZoomTimeSec = 3;
 
 	private final Viewport viewport;
 
@@ -36,9 +36,9 @@ public class ThingTracker {
 		viewport.centerOn(currentTarget);
 
 		if (isDemoMode()) {
-			if (hasBeenDemoTrackingFor(DEMO_MODE_FOCUS_TIME_IN_SECONDS + DEMO_MODE_ZOOM_TIME_IN_SECONDS))
+			if (hasBeenDemoTrackingFor(DemoFocusTimeSec + DemoZoomTimeSec))
 				startTrackingRandomLivingThing();
-			else if (hasBeenDemoTrackingFor(DEMO_MODE_FOCUS_TIME_IN_SECONDS))
+			else if (hasBeenDemoTrackingFor(DemoFocusTimeSec))
 				viewport.zoomOut();
 		}
 
