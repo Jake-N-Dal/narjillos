@@ -118,8 +118,8 @@ public class MainNarjillosApplication extends NarjillosApplication {
 				root.getChildren().add(foregroundView.toNode());
 
 				Node statusInfo = statusBarView.toNode(framesChronometer.getTicksInLastSecond(), getEnvironmentStatistics(),
-					getDishStatistics(), state.getSpeed(), state.getEffects(),
-					getTracker().getStatus(), isBusy());
+						getDishStatistics(), state.getSpeed(), state.getEffects(),
+						getTracker().getStatus(), isBusy());
 				root.getChildren().add(statusInfo);
 			}
 		};
@@ -129,34 +129,55 @@ public class MainNarjillosApplication extends NarjillosApplication {
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
 			public void handle(final KeyEvent keyEvent) {
-				if (keyEvent.getCode() == KeyCode.RIGHT)
-					panViewport(PAN_SPEED, 0, keyEvent);
-				else if (keyEvent.getCode() == KeyCode.LEFT)
-					panViewport(-PAN_SPEED, 0, keyEvent);
-				else if (keyEvent.getCode() == KeyCode.UP)
-					panViewport(0, -PAN_SPEED, keyEvent);
-				else if (keyEvent.getCode() == KeyCode.DOWN)
-					panViewport(0, PAN_SPEED, keyEvent);
-				else if (keyEvent.getCode() == KeyCode.P)
-					state.speedUp();
-				else if (keyEvent.getCode() == KeyCode.O)
-					state.speedDown();
-				else if (keyEvent.getCode() == KeyCode.L)
-					state.toggleLight();
-				else if (keyEvent.getCode() == KeyCode.I)
-					state.toggleInfrared();
-				else if (keyEvent.getCode() == KeyCode.E && keyEvent.isControlDown())
-					state.toggleEffects();
-				else if (keyEvent.getCode() == KeyCode.D && keyEvent.isControlDown())
-					getTracker().toggleDemoMode();
-			}
-
-			private void panViewport(long velocityX, long velocityY, KeyEvent event) {
-				getTracker().stopTracking();
-				getViewport().moveBy(Vector.cartesian(velocityX, velocityY));
-				event.consume();
+				handleKeyEvent(keyEvent);
 			}
 		});
+	}
+
+	private void handleKeyEvent(KeyEvent keyEvent) {
+		if (keyEvent.getCode() == KeyCode.RIGHT)
+			panViewport(PAN_SPEED, 0, keyEvent);
+		else if (keyEvent.getCode() == KeyCode.LEFT)
+			panViewport(-PAN_SPEED, 0, keyEvent);
+		else if (keyEvent.getCode() == KeyCode.UP)
+			panViewport(0, -PAN_SPEED, keyEvent);
+		else if (keyEvent.getCode() == KeyCode.DOWN)
+			panViewport(0, PAN_SPEED, keyEvent);
+		else
+			handleOtherKeyEvents(keyEvent);
+	}
+
+	private void handleOtherKeyEvents(KeyEvent keyEvent) {
+		switch (keyEvent.getCode()) {
+			case P:
+				state.speedUp();
+				break;
+			case O:
+				state.speedDown();
+				break;
+			case L:
+				state.toggleLight();
+				break;
+			case I:
+				state.toggleInfrared();
+				break;
+			case E:
+				if (keyEvent.isControlDown())
+					state.toggleEffects();
+				break;
+			case D:
+				if (keyEvent.isControlDown())
+					getTracker().toggleDemoMode();
+				break;
+			default:
+				break;
+		}
+	}
+
+	private void panViewport(long velocityX, long velocityY, KeyEvent event) {
+		getTracker().stopTracking();
+		getViewport().moveBy(Vector.cartesian(velocityX, velocityY));
+		event.consume();
 	}
 
 	private void registerMouseClickHandlers(final Scene scene) {
@@ -176,8 +197,8 @@ public class MainNarjillosApplication extends NarjillosApplication {
 	}
 
 	private void registerMouseDragHandlers(final Scene scene) {
-		final double[] mouseX = new double[] { 0 };
-		final double[] mouseY = new double[] { 0 };
+		final double[] mouseX = new double[]{0};
+		final double[] mouseY = new double[]{0};
 
 		scene.setOnMousePressed(event -> {
 			mouseX[0] = event.getX();
@@ -228,7 +249,7 @@ public class MainNarjillosApplication extends NarjillosApplication {
 	}
 
 	private void registerTouchHandlers(Scene scene) {
-		final double[] initialZoomLevel = new double[] { 0 };
+		final double[] initialZoomLevel = new double[]{0};
 
 		scene.setOnZoomStarted(event -> initialZoomLevel[0] = getViewport().getZoomLevel());
 		scene.setOnZoom(event -> {
