@@ -7,18 +7,17 @@ import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.things.LifeFormEnergy;
 import org.nusco.narjillos.core.things.Thing;
+import org.nusco.narjillos.core.things.EnergyHandler;
 
 public class FoodPellet implements Thing {
 
 	public static final String LABEL = "food_pellet";
 
 	private final Vector position;
-
 	private final BoundingBox boundingBox;
-
 	private final Energy energy = new LifeFormEnergy(Configuration.FOOD_ENERGY, Double.MAX_VALUE);
-
 	private Thing interactor;
+	private final EnergyHandler energyHandler = new EnergyHandler();
 
 	public FoodPellet(Vector position) {
 		this.position = position;
@@ -71,10 +70,11 @@ public class FoodPellet implements Thing {
 	}
 
 	public void getEaten(Thing feeder) {
-		if (getEnergy().isZero())
+		if (getEnergy().isZero()) {
 			return;
+		}
 
-		feeder.getEnergy().absorb(getEnergy());
+		energyHandler.absorbEnergy(getEnergy(), feeder.getEnergy());
 		this.interactor = feeder;
 	}
 }
